@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html
+    depends_on:
+      - php
+      - db
+
+  php:
+    build: ./php
+    restart: always
+    volumes:
+      - ./html:/var/www/html
+      
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: crud
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
